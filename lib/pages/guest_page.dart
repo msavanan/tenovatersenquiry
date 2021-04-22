@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/userForm/userform.dart';
-import 'package:tenovatersenquiry/widgets/headerWidget.dart';
 
 class GuestPage extends StatefulWidget {
   @override
@@ -16,7 +15,6 @@ class _GuestPageState extends State<GuestPage> {
     return SafeArea(
       child: Column(
         children: [
-          //Container(height: height * 0.2, child: HeaderWidget()),
           Expanded(
               child: SingleChildScrollView(
                   child: Container(height: height, child: UserForm())))

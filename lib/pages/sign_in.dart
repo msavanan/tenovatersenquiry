@@ -15,12 +15,12 @@ class SignIn extends StatefulWidget {
 
 class _SignInState extends State<SignIn> {
   final _formKey = GlobalKey<FormState>();
-  final _userFormKey = GlobalKey<FormState>();
-  String _firstName;
-  String _lastName;
-  String _email;
-  String _password;
-  String _conformationCode;
+
+  final TextEditingController _firstName = TextEditingController();
+  final TextEditingController _lastName = TextEditingController();
+  final TextEditingController _email = TextEditingController();
+  final TextEditingController _password = TextEditingController();
+  final TextEditingController _conformationCode = TextEditingController();
 
   bool _isSignedUp = false;
 
@@ -33,11 +33,11 @@ class _SignInState extends State<SignIn> {
     void _signUp() async {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Signing Up...")));
-      Map<String, String> userAttributes = {"email": _email};
+      Map<String, String> userAttributes = {"email": _email.text};
       try {
         await Amplify.Auth.signUp(
-            username: _email.trim(),
-            password: _password.trim(),
+            username: _email.text.trim(),
+            password: _password.text.trim(),
             options: CognitoSignUpOptions(userAttributes: userAttributes));
         setState(() {
           _isSignedUp = true;
@@ -47,6 +47,9 @@ class _SignInState extends State<SignIn> {
           _isSignedUp = false;
         });
         print(error.message);
+        setState(() {
+          _isSignedUp = true;
+        });
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
             content: Text("Sign up failed, do you already have an account?")));
@@ -63,8 +66,8 @@ class _SignInState extends State<SignIn> {
           .showSnackBar(SnackBar(content: Text('Confirming...')));
       try {
         await Amplify.Auth.confirmSignUp(
-            username: _email.trim(),
-            confirmationCode: _conformationCode.trim());
+            username: _email.text.trim(),
+            confirmationCode: _conformationCode.text.trim());
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Confirmed, you can now login.')));
@@ -87,29 +90,31 @@ class _SignInState extends State<SignIn> {
           child: Container(
               margin: EdgeInsets.only(
                   left: width * 0.05, right: width * 0.05, top: height * 0.05),
-              child: Container(
-                child: Column(children: [
-                  Visibility(
-                    visible: _isSignedUp,
-                    child: Form(
-                      key: _formKey,
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  child: Column(children: [
+                    Visibility(
+                      visible: _isSignedUp,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             UserTextField(
+                              textEditingController: _conformationCode,
                               hintTxt: 'OTP*',
                               labelTxt: 'OTP',
                               validator: (value) {
-                                return 'Check your E-mail for OTP';
+                                if (value.isEmpty) {
+                                  return 'Check your E-mail for OTP';
+                                }
+                                return null;
                               },
-                              onSaved: (otp) => _conformationCode = otp,
                             ),
                             Container(height: height * 0.1),
                             Center(
                               child: MaterialButton(
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
-                                    _formKey.currentState.save();
                                     _confirm();
                                   }
                                   Navigator.of(context).push(MaterialPageRoute(
@@ -128,45 +133,42 @@ class _SignInState extends State<SignIn> {
                             Container(height: spacer),
                           ]),
                     ),
-                  ),
-                  Visibility(
-                    visible: !_isSignedUp,
-                    child: Form(
-                      key: _userFormKey,
+                    Visibility(
+                      visible: !_isSignedUp,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Container(height: spacer),
                             UserTextField(
+                              textEditingController: _firstName,
                               hintTxt: 'First Name',
                               labelTxt: 'First Name*',
                               validator:
                                   nameValidator, //(firstName) => firstName.isEmpty ? '*Required' : null,
-                              onSaved: (firstName) => _firstName = firstName,
                             ),
                             Container(height: spacer),
                             UserTextField(
+                              textEditingController: _lastName,
                               hintTxt: 'Last Name',
                               labelTxt: 'Last Name*',
                               validator:
                                   nameValidator, //(firstName) => firstName.isEmpty ? '*Required' : null,
-                              onSaved: (lastName) => _lastName = lastName,
                             ),
                             Container(height: spacer),
                             UserTextField(
+                              textEditingController: _email,
                               hintTxt: 'E-mail',
                               labelTxt: 'E-mail*',
                               validator: emailValidator,
-                              onSaved: (email) => _email = email,
                             ),
                             Container(height: spacer),
                             UserTextField(
+                              textEditingController: _password,
                               hintTxt: 'Passsword',
                               labelTxt: 'Passsword*',
                               validator: passwordValidator,
                               obscureTxt: true,
-                              onSaved: (password) => _password = password,
                             ),
                             Container(height: spacer),
                             Center(
@@ -175,19 +177,13 @@ class _SignInState extends State<SignIn> {
                                   width: width * 0.6,
                                   child: ElevatedButton(
                                       onPressed: () {
-                                        if (_userFormKey.currentState
-                                            .validate()) {
-                                          _userFormKey.currentState.save();
+                                        if (_formKey.currentState.validate()) {
+                                          //_userFormKey.currentState.save();
                                           _signUp();
                                         }
-                                        setState(() {
+                                        /*setState(() {
                                           _isSignedUp = true;
-                                        });
-                                        /* Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: (BuildContext context) {
-                                          return ConfirmOTP();
-                                        })); */
+                                        });*/
                                       },
                                       child: Text(
                                         'SignUp',
@@ -196,8 +192,8 @@ class _SignInState extends State<SignIn> {
                             ),
                           ]),
                     ),
-                  ),
-                ]),
+                  ]),
+                ),
               )),
         ),
       ),

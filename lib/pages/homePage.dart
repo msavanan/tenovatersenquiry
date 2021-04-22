@@ -74,7 +74,6 @@ class HomePage extends StatelessWidget {
                 Container(height: spacer),
                 ElevatedButton(
                     onPressed: () {
-                      print('Clicked');
                       Navigator.of(context).push(
                           MaterialPageRoute(builder: (BuildContext context) {
                         return SignIn();

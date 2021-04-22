@@ -6,17 +6,20 @@ class UserTextField extends StatelessWidget {
       this.validator,
       this.hintTxt,
       this.labelTxt,
-      this.obscureTxt: false});
+      this.obscureTxt: false,
+      this.textEditingController});
   final FormFieldSetter<String> onSaved;
   final FormFieldValidator<String> validator;
   final String hintTxt;
   final String labelTxt;
   final bool obscureTxt;
+  final TextEditingController textEditingController;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       onSaved: onSaved,
+      controller: this.textEditingController,
       validator: validator,
       autocorrect: false,
       style: TextStyle(color: Colors.black),
