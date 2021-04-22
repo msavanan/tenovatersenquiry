@@ -8,12 +8,6 @@ class HeaderWidget extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.width;
 
-    /*return LayoutBuilder(builder: (BuildContext context, constraints) {
-      double headerHeight = constraints.maxHeight != double.infinity
-          ? constraints.maxHeight
-          : height;
-
-      print(headerHeight);*/
     return Container(
         height: height * 0.4,
         padding: EdgeInsets.only(left: height * 0.05, top: height * 0.15),

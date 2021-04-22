@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 
 class MessageBox extends StatefulWidget {
+  final messageController;
+  MessageBox({this.messageController});
+
   @override
   _MessageBoxState createState() => _MessageBoxState();
 }
 
 class _MessageBoxState extends State<MessageBox> {
-  String _message;
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      onSaved: (message) => _message = message,
+      controller: widget.messageController,
       validator: (message) => message.isEmpty ? '*Required' : null,
       autocorrect: false,
       cursorColor: Colors.black,

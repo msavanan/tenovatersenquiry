@@ -16,11 +16,12 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
 
-  final TextEditingController _firstName = TextEditingController();
-  final TextEditingController _lastName = TextEditingController();
-  final TextEditingController _email = TextEditingController();
-  final TextEditingController _password = TextEditingController();
-  final TextEditingController _conformationCode = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _conformationCodeController =
+      TextEditingController();
 
   bool _isSignedUp = false;
 
@@ -33,11 +34,11 @@ class _SignUpState extends State<SignUp> {
     void _signUp() async {
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text("Signing Up...")));
-      Map<String, String> userAttributes = {"email": _email.text};
+      Map<String, String> userAttributes = {"email": _emailController.text};
       try {
         await Amplify.Auth.signUp(
-            username: _email.text.trim(),
-            password: _password.text.trim(),
+            username: _emailController.text.trim(),
+            password: _passwordController.text.trim(),
             options: CognitoSignUpOptions(userAttributes: userAttributes));
         setState(() {
           _isSignedUp = true;
@@ -66,8 +67,8 @@ class _SignUpState extends State<SignUp> {
           .showSnackBar(SnackBar(content: Text('Confirming...')));
       try {
         await Amplify.Auth.confirmSignUp(
-            username: _email.text.trim(),
-            confirmationCode: _conformationCode.text.trim());
+            username: _emailController.text.trim(),
+            confirmationCode: _conformationCodeController.text.trim());
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Confirmed, you can now login.')));
@@ -100,7 +101,7 @@ class _SignUpState extends State<SignUp> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             UserTextField(
-                              textEditingController: _conformationCode,
+                              Controller: _conformationCodeController,
                               hintTxt: 'OTP*',
                               labelTxt: 'OTP',
                               validator: (value) {
@@ -141,7 +142,7 @@ class _SignUpState extends State<SignUp> {
                           children: [
                             Container(height: spacer),
                             UserTextField(
-                              textEditingController: _firstName,
+                              Controller: _firstNameController,
                               hintTxt: 'First Name',
                               labelTxt: 'First Name*',
                               validator:
@@ -149,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              textEditingController: _lastName,
+                              Controller: _lastNameController,
                               hintTxt: 'Last Name',
                               labelTxt: 'Last Name*',
                               validator:
@@ -157,14 +158,14 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              textEditingController: _email,
+                              Controller: _emailController,
                               hintTxt: 'E-mail',
                               labelTxt: 'E-mail*',
                               validator: emailValidator,
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              textEditingController: _password,
+                              Controller: _passwordController,
                               hintTxt: 'Passsword',
                               labelTxt: 'Passsword*',
                               validator: passwordValidator,
