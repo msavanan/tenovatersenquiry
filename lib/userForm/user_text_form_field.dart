@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
 class UserTextField extends StatelessWidget {
-  UserTextField({this.onSaved, this.validator, this.hintTxt, this.labelTxt});
-  late final FormFieldSetter<String>? onSaved;
-  late final FormFieldValidator<String>? validator;
-  final String? hintTxt;
-  final String? labelTxt;
+  UserTextField(
+      {this.onSaved,
+      this.validator,
+      this.hintTxt,
+      this.labelTxt,
+      this.obscureTxt: false});
+  final FormFieldSetter<String> onSaved;
+  final FormFieldValidator<String> validator;
+  final String hintTxt;
+  final String labelTxt;
+  final bool obscureTxt;
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +21,7 @@ class UserTextField extends StatelessWidget {
       autocorrect: false,
       style: TextStyle(color: Colors.black),
       cursorColor: Colors.black,
+      obscureText: obscureTxt,
       decoration: InputDecoration(
         focusColor: Colors.black,
         hoverColor: Colors.black,
