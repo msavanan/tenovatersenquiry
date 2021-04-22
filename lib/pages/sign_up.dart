@@ -8,12 +8,12 @@ import 'package:tenovatersenquiry/widgets/headerWidget.dart';
 import '../constants.dart';
 import 'homePage.dart';
 
-class SignIn extends StatefulWidget {
+class SignUp extends StatefulWidget {
   @override
-  _SignInState createState() => _SignInState();
+  _SignUpState createState() => _SignUpState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _firstName = TextEditingController();

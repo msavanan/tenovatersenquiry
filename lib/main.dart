@@ -5,7 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/constants.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
-import 'package:tenovatersenquiry/pages/sign_in.dart';
+import 'package:tenovatersenquiry/pages/sign_up.dart';
 
 import 'amplifyconfiguration.dart';
 
@@ -119,7 +119,7 @@ class _EnquiryState extends State<Enquiry> {
           future: _checkSession(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return authenticated ? HomePage() : SignIn();
+              return authenticated ? HomePage() : SignUp();
             } else {
               return Center(child: CircularProgressIndicator());
             }
