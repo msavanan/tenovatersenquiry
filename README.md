@@ -4,6 +4,8 @@ A Enquiry application for Tenovaters Groups which uses AWS as for authentican an
 
 ## Getting Started
 
+Cautions: AWS Amplply plugin is in beta stage it is not advisable to use in Production Applications
+
 1) Signup for an [AWS account](https://console.aws.amazon.com/console/home)
 2) [Install Amplify CLI](https://docs.amplify.aws/cli/start/install)
 3) Once you have the correct version of amplify installed open your favorite Terminal/shell in the corresponding project directory path and type:
