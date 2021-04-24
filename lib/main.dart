@@ -1,26 +1,28 @@
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
-import 'package:amplify_storage_s3/amplify_storage_s3.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/constants.dart';
+import 'package:tenovatersenquiry/models/ModelProvider.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
 import 'package:tenovatersenquiry/pages/query_page.dart';
 
 import 'amplifyconfiguration.dart';
 
 void main() {
-  runApp(Enquiry());
+  runApp(EnquiryPage());
 }
 
-class Enquiry extends StatefulWidget {
+class EnquiryPage extends StatefulWidget {
   @override
-  _EnquiryState createState() => _EnquiryState();
+  _EnquiryPageState createState() => _EnquiryPageState();
 }
 
-class _EnquiryState extends State<Enquiry> {
+class _EnquiryPageState extends State<EnquiryPage> {
   AmplifyAuthCognito auth = AmplifyAuthCognito();
-  AmplifyStorageS3 storage = AmplifyStorageS3();
+  AmplifyDataStore amplifyDataStore =
+      AmplifyDataStore(modelProvider: ModelProvider.instance);
 
   bool configured = false;
   bool authenticated = false;
@@ -28,7 +30,8 @@ class _EnquiryState extends State<Enquiry> {
   @override
   initState() {
     super.initState();
-    Amplify.addPlugins([auth, storage]);
+
+    Amplify.addPlugins([auth, amplifyDataStore]);
 
     Amplify.configure(amplifyconfig).then((value) {
       print("Amplify Configured");

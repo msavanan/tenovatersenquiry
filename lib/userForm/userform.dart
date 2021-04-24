@@ -1,4 +1,8 @@
+import 'package:amplify_datastore/amplify_datastore.dart';
+import 'package:amplify_flutter/amplify.dart';
 import 'package:tenovatersenquiry/constants.dart';
+import 'package:tenovatersenquiry/main.dart';
+import 'package:tenovatersenquiry/models/Enquiry.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
 import 'package:tenovatersenquiry/userForm/user_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -64,7 +68,16 @@ class _UserFormState extends State<UserForm> {
                   Center(
                     child: MaterialButton(
                       onPressed: () {
-                        if (_userFormKey.currentState.validate()) {}
+                        if (_userFormKey.currentState.validate()) {
+                          print(_nameController.text.trim());
+                          print(_emailController.text.trim());
+                          print(_messageController.text);
+                          Enquiry enquiry = Enquiry(
+                              date: TemporalDateTime(DateTime.now()),
+                              email: _emailController.text.trim(),
+                              message: _messageController.text.trim());
+                          Amplify.DataStore.save(enquiry);
+                        }
                         Navigator.of(context).push(
                             MaterialPageRoute(builder: (BuildContext context) {
                           return HomePage();
