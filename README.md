@@ -14,7 +14,7 @@ Cautions: AWS Amplply plugin is in beta stage it is not advisable to use in Prod
    
    ```bash
    $ amplify configure
-   '''
+  ```
 4) intitallize the project
    
    ```bash
