@@ -115,6 +115,12 @@ class _SignUpState extends State<SignUp> {
                             Center(
                               child: MaterialButton(
                                 onPressed: () {
+                                  FocusScopeNode currentFocus =
+                                      FocusScope.of(context);
+                                  if (currentFocus.hasFocus) {
+                                    currentFocus.unfocus();
+                                  }
+
                                   if (_formKey.currentState.validate()) {
                                     _confirm();
                                     Navigator.of(context).push(
@@ -179,8 +185,14 @@ class _SignUpState extends State<SignUp> {
                                   width: width * 0.6,
                                   child: ElevatedButton(
                                       onPressed: () {
+                                        FocusScopeNode currentFocus =
+                                            FocusScope.of(context);
+
+                                        if (currentFocus.hasFocus) {
+                                          currentFocus.unfocus();
+                                        }
+
                                         if (_formKey.currentState.validate()) {
-                                          //_userFormKey.currentState.save();
                                           _signUp();
                                         }
                                       },

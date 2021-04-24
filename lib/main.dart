@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/constants.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
 import 'package:tenovatersenquiry/pages/query_page.dart';
-import 'package:tenovatersenquiry/pages/sign_up.dart';
 
 import 'amplifyconfiguration.dart';
 
@@ -44,8 +43,6 @@ class _EnquiryState extends State<Enquiry> {
     try {
       var session = await auth.fetchAuthSession();
       authenticated = session.isSignedIn;
-      print('------------------------------');
-      print(authenticated);
     } catch (error) {
       print(error);
     }

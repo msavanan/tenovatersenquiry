@@ -23,7 +23,14 @@ class HomePage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double spacer = height / 40;
 
+    void snackBarMessager(String error) {
+      ScaffoldMessenger.of(context).hideCurrentSnackBar();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(error)));
+    }
+
     void _signIn() async {
+      String error = "Error Signing in";
       try {
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text('Signing in...')));
@@ -41,11 +48,15 @@ class HomePage extends StatelessWidget {
             return QueryPage();
           }));
         }
+      } on UserNotFoundException catch (e) {
+        error = 'Incorrect UserName';
+        snackBarMessager(error);
+      } on NotAuthorizedException catch (e) {
+        error = 'Incorrect username or password.';
+        snackBarMessager(error);
       } on AuthException catch (e) {
         print(e);
-        ScaffoldMessenger.of(context).hideCurrentSnackBar();
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text("Error Signing in")));
+        snackBarMessager(error);
       }
     }
 
@@ -88,6 +99,10 @@ class HomePage extends StatelessWidget {
                   Container(height: spacer),
                   ElevatedButton(
                       onPressed: () {
+                        FocusScopeNode currentFocus = FocusScope.of(context);
+                        if (currentFocus.hasFocus) {
+                          currentFocus.unfocus();
+                        }
                         if (_signInKey.currentState.validate()) {
                           _signIn();
                         }
