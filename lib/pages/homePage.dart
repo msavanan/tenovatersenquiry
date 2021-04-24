@@ -30,10 +30,19 @@ class HomePage extends StatelessWidget {
         SignInResult res = await Amplify.Auth.signIn(
             username: _emailController.text.trim(),
             password: _passwordController.text.trim());
+
         dev.log('Sign In Result: ' + res.toString(),
             name: 'com.amazonaws.amplify');
+
+        print(res.isSignedIn);
+        if (res.isSignedIn) {
+          Navigator.of(context)
+              .push(MaterialPageRoute(builder: (BuildContext context) {
+            return QueryPage();
+          }));
+        }
       } on AuthException catch (e) {
-        print(e.message);
+        print(e);
         ScaffoldMessenger.of(context).hideCurrentSnackBar();
         ScaffoldMessenger.of(context)
             .showSnackBar(SnackBar(content: Text("Error Signing in")));
@@ -82,10 +91,6 @@ class HomePage extends StatelessWidget {
                         if (_signInKey.currentState.validate()) {
                           _signIn();
                         }
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return QueryPage();
-                        }));
                       },
                       child: Container(
                           height: 50,
@@ -121,9 +126,6 @@ class HomePage extends StatelessWidget {
                         Navigator.push(context, MaterialPageRoute(
                           builder: (BuildContext context) {
                             return GuestPage();
-                            /*Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return GuestPage();*/
                           },
                         ));
                       },

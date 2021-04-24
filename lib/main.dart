@@ -5,6 +5,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/constants.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
+import 'package:tenovatersenquiry/pages/query_page.dart';
 import 'package:tenovatersenquiry/pages/sign_up.dart';
 
 import 'amplifyconfiguration.dart';
@@ -43,6 +44,8 @@ class _EnquiryState extends State<Enquiry> {
     try {
       var session = await auth.fetchAuthSession();
       authenticated = session.isSignedIn;
+      print('------------------------------');
+      print(authenticated);
     } catch (error) {
       print(error);
     }
@@ -119,7 +122,7 @@ class _EnquiryState extends State<Enquiry> {
           future: _checkSession(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              return authenticated ? HomePage() : SignUp();
+              return authenticated ? QueryPage() : HomePage(); //SignUp();
             } else {
               return Center(child: CircularProgressIndicator());
             }
@@ -127,12 +130,3 @@ class _EnquiryState extends State<Enquiry> {
         ));
   }
 }
-
-/*
-class EnquiryLayout extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return HomePage();
-  }
-}
-*/

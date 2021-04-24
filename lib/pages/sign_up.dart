@@ -117,15 +117,16 @@ class _SignUpState extends State<SignUp> {
                                 onPressed: () {
                                   if (_formKey.currentState.validate()) {
                                     _confirm();
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (BuildContext context) {
+                                      return HomePage();
+                                    }));
                                   }
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (BuildContext context) {
-                                    return HomePage();
-                                  }));
                                 },
                                 child: Text(
                                   "Confirm OTP",
-                                  style: TextStyle(fontSize: height * 0.04),
+                                  style: TextStyle(fontSize: height * 0.025),
                                 ),
                                 color: primaryColor,
                                 padding: EdgeInsets.all(height * 0.02),
@@ -138,7 +139,7 @@ class _SignUpState extends State<SignUp> {
                       visible: !_isSignedUp,
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Container(height: spacer),
                             UserTextField(
@@ -182,15 +183,29 @@ class _SignUpState extends State<SignUp> {
                                           //_userFormKey.currentState.save();
                                           _signUp();
                                         }
-                                        /*setState(() {
-                                          _isSignedUp = true;
-                                        });*/
                                       },
                                       child: Text(
                                         'SignUp',
                                         style: TextStyle(),
                                       ))),
                             ),
+                            Container(height: spacer),
+                            GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    _isSignedUp = true;
+                                  });
+                                },
+                                child: Text('Confirmation Code')),
+                            Container(height: spacer),
+                            GestureDetector(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) {
+                                    return HomePage();
+                                  }));
+                                },
+                                child: Center(child: Text('SignIn'))),
                           ]),
                     ),
                   ]),
