@@ -1,8 +1,10 @@
+import 'dart:async';
+
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:tenovatersenquiry/constants.dart';
-import 'package:tenovatersenquiry/main.dart';
 import 'package:tenovatersenquiry/models/Enquiry.dart';
+import 'package:tenovatersenquiry/models/ModelProvider.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
 import 'package:tenovatersenquiry/userForm/user_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +12,8 @@ import 'package:tenovatersenquiry/userForm/validator.dart';
 import 'package:tenovatersenquiry/widgets/headerWidget.dart';
 import 'package:tenovatersenquiry/widgets/message_box.dart';
 
-import 'user_text_form_field.dart';
+import 'package:amplify_datastore_plugin_interface/amplify_datastore_plugin_interface.dart';
+// Add the following line
 
 class UserForm extends StatefulWidget {
   @override
@@ -24,6 +27,28 @@ class _UserFormState extends State<UserForm> {
   final TextEditingController _messageController = TextEditingController();
 
   final _userFormKey = GlobalKey<FormState>();
+
+  save({TemporalDateTime date, String email, String message}) async {
+    /*StreamSubscription hubSubscription =
+        Amplify.Hub.listen([HubChannel.Auth], (hubEvent) async {
+      if (hubEvent.eventName == 'SIGNED_OUT') {
+        try {
+          await Amplify.DataStore.clear();
+          print('DataStore is cleared.');
+        } on DataStoreException catch (e) {
+          print('Failed to clear DataStore: $e');
+        }
+      }
+    });*/
+
+    Enquiry enquiry = Enquiry(date: date, email: email, message: message);
+    await Amplify.DataStore.save(enquiry);
+    List<Enquiry> enquiryList = await Amplify.DataStore.query(
+      Enquiry.classType,
+    );
+    print('---------');
+    print(enquiryList);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -67,21 +92,25 @@ class _UserFormState extends State<UserForm> {
                   Container(height: spacer),
                   Center(
                     child: MaterialButton(
-                      onPressed: () {
+                      onPressed: () async {
                         if (_userFormKey.currentState.validate()) {
-                          print(_nameController.text.trim());
+                          /*print(_nameController.text.trim());
                           print(_emailController.text.trim());
-                          print(_messageController.text);
-                          Enquiry enquiry = Enquiry(
+                          print(_messageController.text);*/
+                          /*Enquiry enquiry = Enquiry(
                               date: TemporalDateTime(DateTime.now()),
                               email: _emailController.text.trim(),
                               message: _messageController.text.trim());
-                          Amplify.DataStore.save(enquiry);
+                          await Amplify.DataStore.save(enquiry);*/
+                          await save(
+                              date: TemporalDateTime(DateTime.now()),
+                              email: _emailController.text.trim(),
+                              message: _messageController.text.trim());
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                            return HomePage();
+                          }));
                         }
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (BuildContext context) {
-                          return HomePage();
-                        }));
                       },
                       child: Text(
                         "SEND",

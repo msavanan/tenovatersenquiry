@@ -1,3 +1,4 @@
+import 'package:amplify_api/amplify_api.dart';
 import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
@@ -31,7 +32,7 @@ class _EnquiryPageState extends State<EnquiryPage> {
   initState() {
     super.initState();
 
-    Amplify.addPlugins([auth, amplifyDataStore]);
+    Amplify.addPlugins([auth, amplifyDataStore, AmplifyAPI()]);
 
     Amplify.configure(amplifyconfig).then((value) {
       print("Amplify Configured");
