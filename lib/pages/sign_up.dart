@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:tenovatersenquiry/userForm/user_text_form_field.dart';
 import 'package:tenovatersenquiry/userForm/validator.dart';
 import 'package:tenovatersenquiry/widgets/headerWidget.dart';
-
 import '../constants.dart';
 import 'homePage.dart';
 
@@ -24,6 +23,17 @@ class _SignUpState extends State<SignUp> {
       TextEditingController();
 
   bool _isSignedUp = false;
+
+  @override
+  void dispose() {
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _lastNameController.dispose();
+    _conformationCodeController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +110,18 @@ class _SignUpState extends State<SignUp> {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
+                            Visibility(
+                              visible: _emailController.text == '',
+                              child: UserTextField(
+                                controller: _emailController,
+                                hintTxt: 'E-mail',
+                                labelTxt: 'E-mail*',
+                                validator: emailValidator,
+                              ),
+                            ),
+                            Container(height: height * 0.03),
                             UserTextField(
-                              Controller: _conformationCodeController,
+                              controller: _conformationCodeController,
                               hintTxt: 'OTP*',
                               labelTxt: 'OTP',
                               validator: (value) {
@@ -111,7 +131,7 @@ class _SignUpState extends State<SignUp> {
                                 return null;
                               },
                             ),
-                            Container(height: height * 0.1),
+                            Container(height: height * 0.05),
                             Center(
                               child: MaterialButton(
                                 onPressed: () {
@@ -139,6 +159,27 @@ class _SignUpState extends State<SignUp> {
                               ),
                             ),
                             Container(height: spacer),
+                            GestureDetector(
+                              onTap: () async {
+                                if (_formKey.currentState.validate()) {
+                                  try {
+                                    ResendSignUpCodeResult res =
+                                        await Amplify.Auth.resendSignUpCode(
+                                            username:
+                                                _emailController.text.trim());
+                                  } catch (e) {
+                                    print(e);
+                                  }
+                                  //TODO decide later how to process the email for new user
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'OTP has re-send. Check your E-mail account ${_emailController.text.trim()} and confirm')));
+                                }
+                              },
+                              child: Text('Resend OTP'),
+                            ),
+                            Container(height: spacer),
                           ]),
                     ),
                     Visibility(
@@ -149,7 +190,7 @@ class _SignUpState extends State<SignUp> {
                           children: [
                             Container(height: spacer),
                             UserTextField(
-                              Controller: _firstNameController,
+                              controller: _firstNameController,
                               hintTxt: 'First Name',
                               labelTxt: 'First Name*',
                               validator:
@@ -157,7 +198,7 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              Controller: _lastNameController,
+                              controller: _lastNameController,
                               hintTxt: 'Last Name',
                               labelTxt: 'Last Name*',
                               validator:
@@ -165,14 +206,14 @@ class _SignUpState extends State<SignUp> {
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              Controller: _emailController,
+                              controller: _emailController,
                               hintTxt: 'E-mail',
                               labelTxt: 'E-mail*',
                               validator: emailValidator,
                             ),
                             Container(height: spacer),
                             UserTextField(
-                              Controller: _passwordController,
+                              controller: _passwordController,
                               hintTxt: 'Passsword',
                               labelTxt: 'Passsword*',
                               validator: passwordValidator,
@@ -204,6 +245,11 @@ class _SignUpState extends State<SignUp> {
                             Container(height: spacer),
                             GestureDetector(
                                 onTap: () {
+                                  FocusScopeNode currentFocus =
+                                      FocusScope.of(context);
+                                  if (currentFocus.hasFocus) {
+                                    currentFocus.unfocus();
+                                  }
                                   setState(() {
                                     _isSignedUp = true;
                                   });
@@ -212,6 +258,11 @@ class _SignUpState extends State<SignUp> {
                             Container(height: spacer),
                             GestureDetector(
                                 onTap: () {
+                                  FocusScopeNode currentFocus =
+                                      FocusScope.of(context);
+                                  if (currentFocus.hasFocus) {
+                                    currentFocus.unfocus();
+                                  }
                                   Navigator.push(context,
                                       MaterialPageRoute(builder: (context) {
                                     return HomePage();

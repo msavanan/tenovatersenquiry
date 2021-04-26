@@ -83,7 +83,7 @@ class HomePage extends StatelessWidget {
                         hintTxt: 'E-mail',
                         labelTxt: 'E-mail*',
                         validator: emailValidator,
-                        Controller: _emailController,
+                        controller: _emailController,
                       ),
                       Container(height: spacer),
                       UserTextField(
@@ -91,7 +91,7 @@ class HomePage extends StatelessWidget {
                         labelTxt: 'Passsword*',
                         validator: passwordValidator,
                         obscureTxt: true,
-                        Controller: _passwordController,
+                        controller: _passwordController,
                       ),
                       Container(height: spacer),
                     ]),

@@ -26,6 +26,7 @@ class Enquiry extends Model {
   final TemporalDateTime date;
   final String email;
   final String message;
+  final String subject;
 
   @override
   getInstanceType() => classType;
@@ -39,18 +40,21 @@ class Enquiry extends Model {
       {@required this.id,
       @required this.date,
       @required this.email,
-      @required this.message});
+      @required this.message,
+      @required this.subject});
 
   factory Enquiry(
       {String id,
       @required TemporalDateTime date,
       @required String email,
-      @required String message}) {
+      @required String message,
+      @required String subject}) {
     return Enquiry._internal(
         id: id == null ? UUID.getUUID() : id,
         date: date,
         email: email,
-        message: message);
+        message: message,
+        subject: subject);
   }
 
   bool equals(Object other) {
@@ -64,7 +68,8 @@ class Enquiry extends Model {
         id == other.id &&
         date == other.date &&
         email == other.email &&
-        message == other.message;
+        message == other.message &&
+        subject == other.subject;
   }
 
   @override
@@ -78,19 +83,25 @@ class Enquiry extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("date=" + (date != null ? date.format() : "null") + ", ");
     buffer.write("email=" + "$email" + ", ");
-    buffer.write("message=" + "$message");
+    buffer.write("message=" + "$message" + ", ");
+    buffer.write("subject=" + "$subject");
     buffer.write("}");
 
     return buffer.toString();
   }
 
   Enquiry copyWith(
-      {String id, TemporalDateTime date, String email, String message}) {
+      {String id,
+      TemporalDateTime date,
+      String email,
+      String message,
+      String subject}) {
     return Enquiry(
         id: id ?? this.id,
         date: date ?? this.date,
         email: email ?? this.email,
-        message: message ?? this.message);
+        message: message ?? this.message,
+        subject: subject ?? this.subject);
   }
 
   Enquiry.fromJson(Map<String, dynamic> json)
@@ -99,15 +110,22 @@ class Enquiry extends Model {
             ? TemporalDateTime.fromString(json['date'])
             : null,
         email = json['email'],
-        message = json['message'];
+        message = json['message'],
+        subject = json['subject'];
 
-  Map<String, dynamic> toJson() =>
-      {'id': id, 'date': date?.format(), 'email': email, 'message': message};
+  Map<String, dynamic> toJson() => {
+        'id': id,
+        'date': date?.format(),
+        'email': email,
+        'message': message,
+        'subject': subject
+      };
 
   static final QueryField ID = QueryField(fieldName: "enquiry.id");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField EMAIL = QueryField(fieldName: "email");
   static final QueryField MESSAGE = QueryField(fieldName: "message");
+  static final QueryField SUBJECT = QueryField(fieldName: "subject");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Enquiry";
@@ -136,6 +154,11 @@ class Enquiry extends Model {
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
         key: Enquiry.MESSAGE,
+        isRequired: true,
+        ofType: ModelFieldType(ModelFieldTypeEnum.string)));
+
+    modelSchemaDefinition.addField(ModelFieldDefinition.field(
+        key: Enquiry.SUBJECT,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

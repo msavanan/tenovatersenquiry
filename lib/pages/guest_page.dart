@@ -10,7 +10,6 @@ class GuestPage extends StatefulWidget {
 class _GuestPageState extends State<GuestPage> {
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return SafeArea(
       child: Column(
