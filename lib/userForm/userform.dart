@@ -68,11 +68,25 @@ class _UserFormState extends State<UserForm> {
                     child: MaterialButton(
                       onPressed: () async {
                         if (_userFormKey.currentState.validate()) {
-                          await save(
-                              date: TemporalDateTime(DateTime.now()),
-                              email: _emailController.text.trim(),
-                              subject: _subjectController.text.trim(),
-                              message: _messageController.text.trim());
+                          try {
+                            final String subject =
+                                _subjectController.text.trim();
+                            final String message =
+                                _messageController.text.trim();
+                            final String email = _emailController.text.trim();
+                            await save(
+                                date: TemporalDateTime(DateTime.now()),
+                                email: email,
+                                subject: subject,
+                                message: message);
+                            _nameController.text = '';
+                            _emailController.text = '';
+                            _subjectController.text = '';
+                            _messageController.text = '';
+                          } catch (e) {
+                            print("Failed to save the Guest: $e");
+                          }
+
                           Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) {
                             return HomePage();

@@ -25,8 +25,8 @@ class Enquiry extends Model {
   final String id;
   final TemporalDateTime date;
   final String email;
-  final String message;
   final String subject;
+  final String message;
 
   @override
   getInstanceType() => classType;
@@ -40,21 +40,21 @@ class Enquiry extends Model {
       {@required this.id,
       @required this.date,
       @required this.email,
-      @required this.message,
-      @required this.subject});
+      @required this.subject,
+      @required this.message});
 
   factory Enquiry(
       {String id,
       @required TemporalDateTime date,
       @required String email,
-      @required String message,
-      @required String subject}) {
+      @required String subject,
+      @required String message}) {
     return Enquiry._internal(
         id: id == null ? UUID.getUUID() : id,
         date: date,
         email: email,
-        message: message,
-        subject: subject);
+        subject: subject,
+        message: message);
   }
 
   bool equals(Object other) {
@@ -68,8 +68,8 @@ class Enquiry extends Model {
         id == other.id &&
         date == other.date &&
         email == other.email &&
-        message == other.message &&
-        subject == other.subject;
+        subject == other.subject &&
+        message == other.message;
   }
 
   @override
@@ -83,8 +83,8 @@ class Enquiry extends Model {
     buffer.write("id=" + "$id" + ", ");
     buffer.write("date=" + (date != null ? date.format() : "null") + ", ");
     buffer.write("email=" + "$email" + ", ");
-    buffer.write("message=" + "$message" + ", ");
-    buffer.write("subject=" + "$subject");
+    buffer.write("subject=" + "$subject" + ", ");
+    buffer.write("message=" + "$message");
     buffer.write("}");
 
     return buffer.toString();
@@ -94,14 +94,14 @@ class Enquiry extends Model {
       {String id,
       TemporalDateTime date,
       String email,
-      String message,
-      String subject}) {
+      String subject,
+      String message}) {
     return Enquiry(
         id: id ?? this.id,
         date: date ?? this.date,
         email: email ?? this.email,
-        message: message ?? this.message,
-        subject: subject ?? this.subject);
+        subject: subject ?? this.subject,
+        message: message ?? this.message);
   }
 
   Enquiry.fromJson(Map<String, dynamic> json)
@@ -110,22 +110,22 @@ class Enquiry extends Model {
             ? TemporalDateTime.fromString(json['date'])
             : null,
         email = json['email'],
-        message = json['message'],
-        subject = json['subject'];
+        subject = json['subject'],
+        message = json['message'];
 
   Map<String, dynamic> toJson() => {
         'id': id,
         'date': date?.format(),
         'email': email,
-        'message': message,
-        'subject': subject
+        'subject': subject,
+        'message': message
       };
 
   static final QueryField ID = QueryField(fieldName: "enquiry.id");
   static final QueryField DATE = QueryField(fieldName: "date");
   static final QueryField EMAIL = QueryField(fieldName: "email");
-  static final QueryField MESSAGE = QueryField(fieldName: "message");
   static final QueryField SUBJECT = QueryField(fieldName: "subject");
+  static final QueryField MESSAGE = QueryField(fieldName: "message");
   static var schema =
       Model.defineSchema(define: (ModelSchemaDefinition modelSchemaDefinition) {
     modelSchemaDefinition.name = "Enquiry";
@@ -153,12 +153,12 @@ class Enquiry extends Model {
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Enquiry.MESSAGE,
+        key: Enquiry.SUBJECT,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
 
     modelSchemaDefinition.addField(ModelFieldDefinition.field(
-        key: Enquiry.SUBJECT,
+        key: Enquiry.MESSAGE,
         isRequired: true,
         ofType: ModelFieldType(ModelFieldTypeEnum.string)));
   });

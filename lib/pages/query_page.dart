@@ -60,7 +60,6 @@ class _QueryPageState extends State<QueryPage> {
     double height = MediaQuery.of(context).size.height;
     double spacer = height / 40;
 
-    _messageController.text = '';
     print(enquiryList);
 
     return SafeArea(
@@ -105,28 +104,36 @@ class _QueryPageState extends State<QueryPage> {
                     Center(
                       child: MaterialButton(
                         onPressed: () async {
-                          await Amplify.DataStore.clear();
                           FocusScopeNode currentFocus = FocusScope.of(context);
                           if (currentFocus.hasFocus) {
                             currentFocus.unfocus();
                           }
-                          print(_subjectController.text.trim());
-                          print(_messageController.text.trim());
                           if (_messageFormKey.currentState.validate()) {
                             setState(() {
                               visibleStatus = true;
                             });
-                            final email = await getUserID();
-                            print('email: $email');
-                            await save(
-                                date: TemporalDateTime(DateTime.now()),
-                                email: email,
-                                subject: _subjectController.text.trim(),
-                                message: _messageController.text.trim());
+
+                            try {
+                              final email = await getUserID();
+                              final String subject =
+                                  _subjectController.text.trim();
+                              final String message =
+                                  _messageController.text.trim();
+                              await save(
+                                  date: TemporalDateTime(DateTime.now()),
+                                  email: email,
+                                  subject: subject,
+                                  message: message);
+
+                              _subjectController.text = '';
+                              _messageController.text = '';
+                            } catch (e) {
+                              print("Save Failed to save : $e");
+                            }
+
                             setState(() {
                               visibleStatus = false;
                             });
-                            _messageController.text = '';
                           }
                         },
                         child: Text(
