@@ -23,7 +23,7 @@ class HomePage extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
     double spacer = height / 40;
 
-    void snackBarMessager(String error) {
+    void snackBarMessenger(String error) {
       ScaffoldMessenger.of(context).hideCurrentSnackBar();
       ScaffoldMessenger.of(context)
           .showSnackBar(SnackBar(content: Text(error)));
@@ -50,13 +50,13 @@ class HomePage extends StatelessWidget {
         }
       } on UserNotFoundException catch (e) {
         error = 'Incorrect UserName';
-        snackBarMessager(error);
+        snackBarMessenger(error);
       } on NotAuthorizedException catch (e) {
         error = 'Incorrect username or password.';
-        snackBarMessager(error);
+        snackBarMessenger(error);
       } on AuthException catch (e) {
         print(e);
-        snackBarMessager(error);
+        snackBarMessenger(error);
       }
     }
 

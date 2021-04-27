@@ -4,9 +4,7 @@ import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
 import 'package:amplify_datastore/amplify_datastore.dart';
 import 'package:amplify_flutter/amplify.dart';
 import 'package:flutter/material.dart';
-import 'package:tenovatersenquiry/models/Enquiry.dart';
 import 'package:tenovatersenquiry/pages/homePage.dart';
-import 'package:tenovatersenquiry/query_list_view.dart';
 import 'package:tenovatersenquiry/widgets/headerWidget.dart';
 import 'package:tenovatersenquiry/widgets/message_box.dart';
 
@@ -20,17 +18,15 @@ class QueryPage extends StatefulWidget {
 
 class _QueryPageState extends State<QueryPage> {
   // ignore: missing_return
-  Future<List<dynamic>> getQuery() async {
+  /* Future<List<dynamic>> getQuery() async {
     try {
       return await Amplify.DataStore.query(Enquiry.classType);
     } catch (e) {
       print('Query failed: $e');
     }
-  }
+  }*/
 
-  List<Enquiry> enquiryList = [];
-
-  bool enquiryState = false;
+  //List<Enquiry> enquiryList = [];
 
   final _messageFormKey = GlobalKey<FormState>();
 
@@ -39,6 +35,7 @@ class _QueryPageState extends State<QueryPage> {
 
   bool visibleStatus = false;
 
+  // ignore: missing_return
   Future<String> getUserID() async {
     try {
       final authUser = await Amplify.Auth.fetchUserAttributes();
@@ -49,18 +46,10 @@ class _QueryPageState extends State<QueryPage> {
   }
 
   @override
-  void initState() {
-    //getQuery();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double spacer = height / 40;
-
-    print(enquiryList);
 
     return SafeArea(
       child: Scaffold(
@@ -74,18 +63,17 @@ class _QueryPageState extends State<QueryPage> {
                 Column(
                   children: [
                     Container(height: spacer),
-                    Container(
+                    /*Container(
                         height: MediaQuery.of(context).size.height * .3,
                         child: QueryListView(
                           getQuery: getQuery,
-                        )),
+                        )),*/
                     Container(height: spacer),
                   ],
                 ),
                 Column(
                   children: [
                     Container(
-                      //height: MediaQuery.of(context).size.height * .25,
                       child: Column(children: [
                         Form(
                             key: _messageFormKey,
