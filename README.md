@@ -34,4 +34,12 @@ Cautions: AWS Amplply plugin is in beta stage it is not advisable to use in Prod
  ```bash
  $ amplify status
  ```
+ Todo's
+ - [ ] Forget Password
+ - [ ] Resend OTP
+ - [ ] Save User name while authentication
+ 
 You should see the table in the terminal which shows the plugin is added in the project.
+<p align="center">
+<img src="https://github.com/msavanan/images_readme/blob/main/tenovatersenquiry/tenavators_gif.gif" width="300"/>
+</p>
